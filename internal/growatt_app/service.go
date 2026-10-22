@@ -326,6 +326,23 @@ func (g *GrowattAppService) SetBackflow(device models.NoahDevicePayload, enableL
 	return err
 }
 
+func (g *GrowattAppService) SetChargingPowerRate(device models.NoahDevicePayload, rate float64) error {
+	slog.Info("trying to set charging power rate (app)", slog.String("device", device.Serial), slog.Float64("rate", rate))
+	if err := g.ensureParameterLogin(); err != nil {
+		slog.Error("unable to set charging power rate (app)", slog.String("device", device.Serial))
+		g.publishHealth(device, err)
+		return err
+	}
+
+	err := g.client.SetChargingPowerRate(device.Serial, rate)
+	if err != nil {
+		slog.Error("unable to set charging power rate (app)", slog.String("error", err.Error()))
+	}
+
+	g.publishHealth(device, err)
+	return err
+}
+
 func (g *GrowattAppService) poll(ctx context.Context, device models.NoahDevicePayload) {
 	slog.Info("start polling growatt (app)",
 		slog.Int("interval", int(g.opts.PollingInterval/time.Second)),
