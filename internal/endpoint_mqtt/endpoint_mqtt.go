@@ -202,6 +202,11 @@ func (e *Endpoint) debouncedParametersSubscription(dev models.NoahDevicePayload)
 		e.param_applier.SetChargingLimits(dev, *e.lastParameter.ChargingLimit, *e.lastParameter.DischargeLimit)
 	}
 
+	if e.newParameter.ChargingPowerRate != nil {
+	e.param_applier.SetChargingPowerRate(dev, *e.lastParameter.ChargingPowerRate)
+		
+	}
+
 	if e.newParameter.AllowGridCharging != "" {
 		e.param_applier.SetAllowGridCharging(dev, e.lastParameter.AllowGridCharging)
 	}
