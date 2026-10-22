@@ -112,6 +112,7 @@ type ParameterPayload struct {
 	NeverPowerOff               OnOff     `json:"never_power_off,omitempty"`
 	AntiBackflowEnable          OnOff     `json:"anti_backflow_enable,omitempty"`
 	AntiBackflowPowerPercentage *float64  `json:"anti_backflow_power_percentage,omitempty"`
+	ChargingPowerRate           *float64  `json:"charging_power_rate,omitempty"`
 }
 
 func (p *ParameterPayload) UpdateFrom(src ParameterPayload) {
@@ -151,6 +152,9 @@ func (p *ParameterPayload) UpdateFrom(src ParameterPayload) {
 	if src.AntiBackflowPowerPercentage != nil {
 		p.AntiBackflowPowerPercentage = src.AntiBackflowPowerPercentage
 	}
+	if src.ChargingPowerRate != nil {
+		p.ChargingPowerRate = src.ChargingPowerRate
+}
 }
 
 func EmptyParameterPayload() ParameterPayload {
@@ -159,6 +163,7 @@ func EmptyParameterPayload() ParameterPayload {
 	defaultACCouplePower := 150.0
 	var defaultMode WorkMode = WorkModeLoadFirst
 	antiBackflowPowerPercentage := 0.0
+	chargingPowerRate := 250.0
 
 	// prevent nil pointer dereference in endpoint_mqtt.debouncedParametersSubscription()
 	return ParameterPayload{
@@ -167,6 +172,7 @@ func EmptyParameterPayload() ParameterPayload {
 		DefaultACCouplePower:        &defaultACCouplePower,
 		DefaultMode:                 &defaultMode,
 		AntiBackflowPowerPercentage: &antiBackflowPowerPercentage,
+		ChargingPowerRate:           &chargingPowerRate,
 	}
 }
 
