@@ -113,6 +113,19 @@ func (g *GrowattService) SetOutputPowerW(device models.NoahDevicePayload, mode m
 	return err
 }
 
+func (g *GrowattService) SetChargingPowerRate(device models.NoahDevicePayload, rate float64) error {
+	slog.Info("trying to set charging power rate (web)", slog.String("device", device.Serial), slog.Float64("rate", rate))
+
+	err := g.client.SetChargingPowerRate(device.Serial, rate)
+	if err != nil {
+		slog.Error("unable to set charging power rate (web)", slog.String("error", err.Error()), slog.String("device", device.Serial))
+	}
+
+	g.publishHealth(device, err)
+	return err
+}
+
+
 func (g *GrowattService) SetChargingLimits(device models.NoahDevicePayload, chargingLimit float64, dischargeLimit float64) error {
 	slog.Info("trying to set charging limits (web)", slog.String("device", device.Serial), slog.Float64("chargingLimit", chargingLimit), slog.Float64("dischargeLimit", dischargeLimit))
 
