@@ -244,3 +244,21 @@ func (h *Client) SetNeverPowerOff(serialNumber string, enable int) error {
 func (h *Client) SetBackflow(serialNumber string, enableLimit int, powerSettingPercent float64) error {
 	return h.nexaSet(serialNumber, "backflow_setting", fmt.Sprintf("%d", enableLimit), fmt.Sprintf("%.0f", powerSettingPercent))
 }
+
+// Charging power rate (time segment 1)
+func (h *Client) SetChargingPowerRate(serialNumber string, rate float64) error {
+	v := math.Max(0, math.Min(1000, rate))
+	return h.nexaSet(
+		serialNumber,
+		"time_segment1",
+		"1",
+		"09",
+		"00",
+		"18",
+		"00",
+		"0",
+		"1",
+		"0",
+		fmt.Sprintf("%.0f", v),
+	)
+}
