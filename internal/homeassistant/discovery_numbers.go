@@ -100,6 +100,31 @@ func generateNumberDiscoveryPayload(appVersion string, info DeviceInfo) []Number
 			Max:               100,
 			UnitOfMeasurement: UnitPercent,
 		},
+		{
+			CommonConfig: CommonConfig{
+				Name:     "Charging Power Rate",
+				UniqueId: fmt.Sprintf("%s_charging_power_rate", info.SerialNumber),
+				Icon:     "",
+				Device:   device,
+				Origin:   origin,
+			},
+			StateConfig: StateConfig{
+				StateTopic:    info.ParameterStateTopic(),
+				ValueTemplate: "{{ value_json.charging_power_rate }}",
+			},
+			CommandConfig: CommandConfig{
+				CommandTopic:    info.ParameterCommandTopic(),
+				CommandTemplate: "{\"charging_power_rate\": {{ value }}}",
+			},
+			StateClass:        StateClassMeasurement,
+			Mode:              ModeSlider,
+			Step:              1,
+			Min:               0,
+			Max:               1000,
+			UnitOfMeasurement: UnitPercent,
+		},
+
+		
 	}
 
 	return numbers
