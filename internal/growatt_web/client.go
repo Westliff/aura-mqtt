@@ -255,3 +255,20 @@ func (h *Client) SetNeverPowerOff(serialNumber string, enable int) error {
 	}
 	return h.tcpset(serialNumber, "never_power_off", fmt.Sprintf("%d", enable))
 }
+// Charging power rate (time segment 1)
+func (c *Client) SetChargingPowerRate(serialNumber string, rate float64) error {
+	v := math.Max(0, math.Min(1000, rate))
+	return c.tcpset(
+		serialNumber,
+		"time_segment1",
+		"1",
+		"09",
+		"00",
+		"18",
+		"00",
+		"0",
+		"1",
+		"0",
+		fmt.Sprintf("%.0f", v),
+	)
+}
